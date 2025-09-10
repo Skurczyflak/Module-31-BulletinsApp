@@ -1,13 +1,13 @@
-Module 31 BulletinsApp
+## Module 31 BulletinsApp
 
-App use MongoDB to store data, right now there is only writen Backend,
+### App use MongoDB to store data, right now there is only Backend writen.
 
-.env Structure:
-MONGODB_URI="Data base link",
-SESSION_SECRET="your secret",
+#### .env
+- MONGODB_URI="Data base link",
+- SESSION_SECRET="your secret",
 
-MongoDB Structure:
-  BulletinsAppDB
-    -bulletins,
-    -sessions,
-    -users,
+#### MongoDB 
+- BulletinsAppDB
+  - bulletins,
+  - sessions,
+  - users,
