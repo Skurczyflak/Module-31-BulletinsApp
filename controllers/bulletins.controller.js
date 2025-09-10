@@ -69,19 +69,21 @@ exports.updateOne = async(req, res) => {
         }
     }catch(err){
         if(req.file) fs.unlinkSync(req.file.path);
-        res.status(500).json({message: err});
+        return res.status(500).json({message: err});
     }
 }
 
 exports.deleteOne = async(req, res) => {
     try{
         const bulletinsFound = await Bulletins.findById(req.params.id);
-        if(!bulletinsFound) res.status(404).json({message: 'Not found'});
-        else{
+        if(bulletinsFound && bulletinsFound.sellerId === req.session.user.id){
             await Bulletins.deleteOne({_id: req.params.id});
             fs.unlinkSync(`./public/uploads/${bulletinsFound.image}`);
             const bulletins = await Bulletins.find();
             res.json(bulletins);
+        }else {
+            if(bulletinsFound && bulletinsFound.sellerId !== req.session.user.id) return res.status(403).json({message: 'Forbidden'});
+            else return res.status(404).json({message: 'Not found'});
         }
     }catch(err){
         res.status(500).json({message: err});
