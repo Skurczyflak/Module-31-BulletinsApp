@@ -9,7 +9,6 @@ const MongoStore = require('connect-mongo');
 
 const bulletinsRoutes = require('./routes/bulletins.routes');
 const authRoutes = require('./routes/auth.routes');
-//const usersRoutes = require('./routes/users.routes');
 
 const server = app.listen(process.env.PORT || 8000, () => { console.log('Server is running...') });
 const io = socket(server);
