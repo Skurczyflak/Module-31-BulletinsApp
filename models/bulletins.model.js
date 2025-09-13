@@ -26,8 +26,9 @@ const bulletinSchema = new mongoose.Schema({
         required: true
     },
     sellerId: {
-        type: String,
-        required: true
-    }});
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }});
 
 module.exports = mongoose.model('Bulletin', bulletinSchema);

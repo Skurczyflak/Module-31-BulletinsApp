@@ -21,7 +21,7 @@ exports.getBySearchPhrase = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try{
-        const bulletins = await Bulletins.findById(req.params.id).populate('sellerId');
+        const bulletins = await Bulletins.findById(req.params.id).populate({path: 'sellerId',select: '-password'});
         if(!bulletins) res.status(404).json({message: 'Not found'});
         else res.json(bulletins);
     }catch(err){

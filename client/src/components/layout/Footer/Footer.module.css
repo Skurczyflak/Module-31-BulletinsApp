@@ -1,0 +1,9 @@
+.root{
+    padding: 0.5rem;
+    background-color: var(--clr-light);
+    color: var(--clr-black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.336);
+}
