@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { API_URL } from '../config';
 
 /* SELECTORS */
 export const getUser = ({ user }) => user.data;
@@ -13,28 +11,16 @@ const START_REQUEST = createActionName('START_REQUEST');
 const END_REQUEST = createActionName('END_REQUEST');
 const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 
-const GET_LOGGED_USER = createActionName('GET_LOGGED_USER');
+const LOG_IN = createActionName('LOG_IN');
+const LOG_OUT = createActionName('LOG_OUT');
 
 /* ACTION CREATORS */
 export const startRequest = () => ({ type: START_REQUEST });
 export const endRequest = () => ({ type: END_REQUEST });
 export const errorRequest = error => ({ error, type: ERROR_REQUEST });
 
-export const getLoggedUser = payload => ({ payload, type: GET_LOGGED_USER });
-
-/* THUNK */
-export const getLoggedUserRequest = () => {
-    return async dispatch => {
-        try{
-            let res = await axios.get(`${API_URL}/auth/user`);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            dispatch(getLoggedUser({ data: res.data}));
-            dispatch(endRequest({name: 'GET_LOGGED_USER'}));
-        }catch(err){
-            dispatch(errorRequest({ name: 'GET_LOGGED_USER', error: err.message}));
-        }
-    }
-}
+export const logIn = (payload) => ({ payload, type: LOG_IN });
+export const logOut = () => ({ type: LOG_OUT });
 
 /* INITIAL STATE */
 const initialState = {
@@ -45,8 +31,10 @@ const initialState = {
 /* REDUCER */
 export default function reducer(statePart = initialState, action = {}) {
     switch (action.type) {
-        case GET_LOGGED_USER:
-            return action.payload;
+        case LOG_IN:
+            return { data: action.payload };
+        case LOG_OUT:
+            return { data: null };
         case START_REQUEST:
             return { ...statePart, request: { pending: true, error: null, success: false } };
         case END_REQUEST:

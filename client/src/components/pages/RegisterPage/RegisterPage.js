@@ -89,11 +89,11 @@ const RegisterPage = () => {
                 <fieldset className={styles.inputGroup}>
                 <label>
                     <span>Login</span>
-                    <input name="login" id="login" className={styles.input} type="text" placeholder="Login" value={login} onChange={(e) => setLogin(e.target.value)} />
+                    <input name="login" id="login" className={styles.input} type="text" placeholder="Login" value={login} onChange={(e) => setLogin(e.target.value)}/>
                 </label>
                 <label>
                     <span>Password</span>
-                    <input name="password" id="password" className={styles.input} type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input name="password" id="password" className={styles.input} type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete='off'/>
                 </label>
                 <label>
                     <span>Phone</span>

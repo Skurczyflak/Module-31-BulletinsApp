@@ -1,8 +1,6 @@
 const Session = require('../models/Session.model');
 const authMiddleware = async (req, res, next) => {
-
-  console.log(req.session);
-  if (process.env.NODE_ENV == "production") {
+  if (process.env.NODE_ENV !== "production") {
 
     try {
 
@@ -19,8 +17,7 @@ const authMiddleware = async (req, res, next) => {
       req.session.user = {
         id: sessionData.user.id,
         login: sessionData.user.login,
-      }
-
+      };
       next();
     }
     catch (err) {

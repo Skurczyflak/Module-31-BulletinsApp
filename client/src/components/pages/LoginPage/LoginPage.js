@@ -6,7 +6,8 @@ import { API_URL } from '../../../config';
 import AlertFieldset from '../../common/AlertFieldset/AlertFieldset';
 import ProgressBox from '../../common/ProgressBox/ProgressBox';
 import { useDispatch } from 'react-redux';
-import { getLoggedUserRequest } from '../../../redux/userRedux';
+import { logIn } from '../../../redux/userRedux';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
 
@@ -14,6 +15,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [status, setStatus] = useState(null);
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const submitHandle = e => {
@@ -31,8 +33,8 @@ const LoginPage = () => {
         fetch(`${API_URL}/auth/login`, options)
         .then(res =>{
             if (res.status === 200) {
-                setStatus('success'); 
-                dispatch(getLoggedUserRequest());
+                dispatch(logIn({login}));
+                navigate('/');
             }
             else if(res.status === 400) setStatus('clientError');
             else setStatus('serverError');
@@ -41,11 +43,6 @@ const LoginPage = () => {
 
     return(
     <form className={styles.root} onSubmit={submitHandle}>
-
-            {status === 'success' && <AlertFieldset type="success" header="Success!">
-                <p>You have successfully registered.</p>
-                <p>You can now log in.</p>
-            </AlertFieldset>}
 
             {status === 'serverError' && <AlertFieldset type="error" header="Something went wrong!">
                 <p>Unexpected error occurred.</p>

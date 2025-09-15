@@ -14,11 +14,11 @@ const BulletinInfo = ({parms}) => {
     if(!parms) {
         return <ProgressBar />
     }
-    const { title,content, dateOfPost, image, location, price, _id } = parms;
-    const { login, avatar, phone } = parms.sellerId;
+    const { title,content, dateOfPost, image, location, price, _id } = parms || {};
+    const { login, avatar, phone } = parms.sellerId || {};
 
-    const date = new Date(dateOfPost).toLocaleString();
-    const formattedPhone = phone.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4');
+    const date = dateOfPost ? new Date(dateOfPost).toLocaleString() : '';
+    const formattedPhone = phone ? phone.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4') : '';
 
     return(
     <section aria-label='Product Information' className={styles.root}>

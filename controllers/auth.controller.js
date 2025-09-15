@@ -4,6 +4,8 @@ const getImageFileType = require('../utils/getImageFileType');
 const isValidPhoneNumber = require('../utils/isValidPhoneNumber');
 const fs = require('fs');
 
+const Session = require('../models/Session.model');
+
 exports.register = async (req, res) => {
   try {
     const { login, password, phone } = req.body;
@@ -54,11 +56,15 @@ exports.loginUser = async (req, res) => {
 
 exports.logoutUser = async (req, res) => {
     try{
-        if (process.env.NODE_ENV !== "production") await Session.deleteMany({});
-        req.session.destroy();
-        res.status(200).send({ message: 'Logout success' });
+        if (process.env.NODE_ENV !== "production"){ 
+            await Session.deleteMany({});
+            res.status(200).send({ message: 'Logout success' });
+        }else{
+            req.session.destroy();
+            res.status(200).send({ message: 'Logout success' });
+        }
     }catch(err){
-        res.status(500).json({message: err});
+        res.status(500).json({message: `error: ${err}`});
     }
 }
 

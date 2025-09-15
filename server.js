@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  cookie: { secure: process.env.NODE_ENV != 'production'},
+  cookie: { secure: process.env.NODE_ENV == 'production'},
   store: MongoStore.create({mongoUrl: process.env.MONGODB_URI,}),
   resave: false,
   saveUninitialized: false

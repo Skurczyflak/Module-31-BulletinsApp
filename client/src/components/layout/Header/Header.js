@@ -14,7 +14,7 @@ const Header = () => {
       { !user && <Button type="link" LinkTo="/auth/login">Login</Button>}
       { !user && <Button type="link" LinkTo="/auth/register">Register</Button>}
       { user && <div className={styles.user}>{user.login}</div>}
-      {<Button type="button">Logout</Button>}
+      {<Button type="link" LinkTo="/auth/logout">Logout</Button>}
     </nav>
   </header>
 )};
