@@ -20,6 +20,16 @@
     gap: 1rem;
 }
 
+.user {
+    color: var(--clr-white);
+    border: 1px solid var(--clr-btn);
+    padding: 0.5rem 1rem;
+    background-color: var(--clr-btn);
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
 @media screen and (max-width: 600px) {
     .root{
         flex-direction: column;

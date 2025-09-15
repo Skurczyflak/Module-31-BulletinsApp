@@ -19,11 +19,11 @@ exports.register = async (req, res) => {
         return res.status(201).json({ message: `User created successfully. ID: ${user.login}` });
       }
     } else {
-        fs.unlinkSync(req.file.path);
+        if(req.file) fs.unlinkSync(req.file.path);
         return res.status(400).json({ message: 'Bad request' });
     }
   } catch (err) {
-    fs.unlinkSync(req.file.path);
+    if(req.file) fs.unlinkSync(req.file.path);
     return res.status(500).json({ message: err });
   }
 };
@@ -64,7 +64,7 @@ exports.logoutUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
     try{
-        res.status(200).send({ message: req.session.user });
+        res.status(200).send( req.session.user );
     }catch(err){
         res.status(500).json({ message: err });
     }

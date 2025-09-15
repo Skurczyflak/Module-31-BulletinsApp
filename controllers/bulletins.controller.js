@@ -39,12 +39,11 @@ exports.addOne = async(req, res) => {
             const bulletin = await Bulletins.create({title: title, content: content, dateOfPost: dateOfPost, image: req.file.filename, price: price, location: location, sellerId: sellerId});
             return res.status(201).json({message: `Bulletin created successfully. ID: ${bulletin._id}`});
         }else{
-            fs.unlinkSync(req.file.path);
+            if(req.file) fs.unlinkSync(req.file.path);
             res.status(400).json({message: 'Bad request'});
         }
-
     }catch(err){
-        fs.unlinkSync(req.file.path);
+        if(req.file) fs.unlinkSync(req.file.path);
         res.status(500).json({message: err});
     }
 }

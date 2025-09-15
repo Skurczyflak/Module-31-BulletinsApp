@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { API_URL } from '../config';
-/* SELECTORS */
 
+/* SELECTORS */
 export const getBulletins = ({bulletins}) => bulletins.data;
 export const getRequest = ({bulletins}) => bulletins.request;
 export const getBulletin = ({bulletins}) => bulletins.single;
 
 /* ACTIONS */
-
 const reducerName = 'bulletins';
 const createActionName = name => `app/${reducerName}/${name}`;
 
@@ -18,6 +17,7 @@ const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 const LOAD_BULLETINS = createActionName('LOAD_BULLETINS');
 const GET_BULLETIN_BY_ID = createActionName('GET_BULLETIN_BY_ID');
 
+/* ACTION CREATORS */
 export const startRequest = () => ({ type: START_REQUEST });
 export const endRequest = () => ({ type: END_REQUEST });
 export const errorRequest = error => ({ error, type: ERROR_REQUEST });
@@ -35,7 +35,7 @@ export const loadBulletinsRequest = () => {
             dispatch(loadBulletins(res.data));
             dispatch(endRequest({name: 'LOAD_BULLETINS'}));
         }catch(err){
-            dispatch(errorRequest({ name: 'LOAD_BULLETINS', message: err.message}));
+            dispatch(errorRequest({ name: 'LOAD_BULLETINS', error: err.message}));
         }
     }
 };
@@ -45,11 +45,11 @@ export const getBulletinByIdRequest = id => {
         dispatch(startRequest({name: 'GET_BULLETIN_BY_ID'}));
         try{
             let res = await axios.get(`${API_URL}/bulletins/${id}`);
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             dispatch(getBulletinById(res.data));
             dispatch(endRequest({name: 'GET_BULLETIN_BY_ID'}));
         }catch(err){
-            dispatch(errorRequest({ name: 'GET_BULLETIN_BY_ID', message: err.message}));
+            dispatch(errorRequest({ name: 'GET_BULLETIN_BY_ID', error: err.message}));
         }
     }
 };
@@ -61,7 +61,7 @@ const initialState = {
   data: [],
   single: {},
   searchResults: [],
-  request: { pending: false, error: null, success: false }
+  request: { pending: false, error: null, success: null }
 };
 
 /* REDUCER */

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import BulletinGrid from "../../common/BulletinGrid/BulletinGrid";
 import SearchForm from "../../features/SearchForm/SearchForm";
+import ProgressBox from "../../common/ProgressBox/ProgressBox";
 
 const HomePage = () => {
     const dispatch = useDispatch();
@@ -15,9 +16,9 @@ const HomePage = () => {
     const bulletins = useSelector(getBulletins);
     const request = useSelector(getRequest);
 
-    if(request.pending) return <h1>Loading...</h1>;
+    if(request.pending) return <ProgressBox />;
     else if(request.error) return <h1>{request.error}</h1>;
-    else if(!request.success) return <h1>Success</h1>;
+    else if(!request.success) return <h1>No bulletins</h1>;
     else if(request.success)return(
     <>
       <SearchForm />

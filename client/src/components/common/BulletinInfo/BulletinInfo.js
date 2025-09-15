@@ -2,13 +2,23 @@ import styles from './BulletinInfo.module.css';
 import { SOCKET_URL } from '../../../config';
 
 import Button from '../Button/Button';
+import ProgressBar from '../ProgressBox/ProgressBox';
+
+import { useSelector } from 'react-redux';
+import { getUser } from '../../../redux/userRedux';
 
 const BulletinInfo = ({parms}) => {
-    console.log(parms);
+
+    const user = useSelector(getUser);
+
+    if(!parms) {
+        return <ProgressBar />
+    }
     const { title,content, dateOfPost, image, location, price, _id } = parms;
     const { login, avatar, phone } = parms.sellerId;
 
     const date = new Date(dateOfPost).toLocaleString();
+    const formattedPhone = phone.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4');
 
     return(
     <section aria-label='Product Information' className={styles.root}>
@@ -22,7 +32,7 @@ const BulletinInfo = ({parms}) => {
                     <span>Description:</span> {content}
                 </p>
                 <div className={styles.bulletin}>
-                    <div className={styles.info}>
+                    <div className={styles.bulletinInfo}>
                     <p className={styles.date}>
                         <span>Posted:</span> {date}
                     </p>
@@ -37,12 +47,14 @@ const BulletinInfo = ({parms}) => {
                         <div className={styles.avatarContainer}>
                             <img src={`${SOCKET_URL}/uploads/${avatar}`} alt={login} className={styles.avatar} />
                         </div>
-                        <p>{login}</p>
-                        <p>{phone}</p>
+                        <div className={styles.sellerInfo}>
+                            <p><span>User:</span>{login}</p>
+                            <p><span>Phone:</span>{formattedPhone}</p>
+                        </div>
                     </div>
                 </div>
                 {/* Only when user is logged in */}
-                {<div className={styles.btns}>
+                { user && user.id === parms.sellerId && <div className={styles.btns}>
                     <Button type={'link'} LinkTo={`/bulletins/edit/${_id}`}>Edit</Button>
                     <Button type={'button'} variant={'remove'}>Remove</Button>
                 </div>}
