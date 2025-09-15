@@ -17,7 +17,7 @@ const HomePage = () => {
     const request = useSelector(getRequest);
 
     if(request.pending) return <ProgressBox />;
-    else if(request.error) return <h1>{request.error}</h1>;
+    else if(request.error) return <>{request.error.message}</>;
     else if(!request.success) return <h1>No bulletins</h1>;
     else if(request.success)return(
     <>

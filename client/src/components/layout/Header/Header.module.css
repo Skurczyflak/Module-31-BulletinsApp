@@ -6,6 +6,7 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.336);
+    z-index: 1;
 }
 
 .title{
@@ -34,5 +35,9 @@
     .root{
         flex-direction: column;
         gap: 1rem;
+    }
+    .navBtns {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

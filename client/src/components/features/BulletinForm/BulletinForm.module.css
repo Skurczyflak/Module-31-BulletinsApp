@@ -72,3 +72,30 @@
         height: 100%;
     }
 }
+
+@media (max-width: 1000px) {
+
+    .wrapper{
+        padding-inline: 0;
+    }
+
+    .group{
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+
+    .group legend{
+        text-align: center;
+    }
+
+    .fileInput {
+        padding-inline: 0;
+        padding-bottom: 1rem;
+        text-align: center;
+        align-items: center;
+        img{
+            width: 250px;
+        }
+    }
+}

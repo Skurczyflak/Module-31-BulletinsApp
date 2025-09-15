@@ -16,6 +16,7 @@ const BulletinInfo = ({parms}) => {
     }
     const { title,content, dateOfPost, image, location, price, _id } = parms || {};
     const { login, avatar, phone } = parms.sellerId || {};
+    const id = parms.sellerId ? parms.sellerId._id : '';
 
     const date = dateOfPost ? new Date(dateOfPost).toLocaleString() : '';
     const formattedPhone = phone ? phone.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4') : '';
@@ -54,9 +55,9 @@ const BulletinInfo = ({parms}) => {
                     </div>
                 </div>
                 {/* Only when user is logged in */}
-                { user && user.id === parms.sellerId && <div className={styles.btns}>
+                { user && user.id === id && <div className={styles.btns}>
                     <Button type={'link'} LinkTo={`/bulletins/edit/${_id}`}>Edit</Button>
-                    <Button type={'button'} variant={'remove'}>Remove</Button>
+                    <Button type={'link'} LinkTo={`/bulletins/delete/${_id}`} variant={'remove'}>Remove</Button>
                 </div>}
             </div>
         </div>

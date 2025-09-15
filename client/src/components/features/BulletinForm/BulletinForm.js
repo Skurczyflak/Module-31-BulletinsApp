@@ -4,17 +4,18 @@ import styles from './BulletinForm.module.css';
 import { SOCKET_URL } from '../../../config';
 
 const BulletinForm = (props) => {
-  const [id] = useState(props.id || null);
-  const [title, setTitle] = useState(props.title || null);
-  const [content, setContent] = useState(props.content || null);
-  const [price, setPrice] = useState(props.price || null);
-  const [location, setLocation] = useState(props.location || null);
-  const [image] = useState(props.image || null);
+  const [id] = useState(props.id || '');
+  const [title, setTitle] = useState(props.title || '');
+  const [content, setContent] = useState(props.content || '');
+  const [price, setPrice] = useState(props.price || '');
+  const [location, setLocation] = useState(props.location || '');
+  const [image, setImage] = useState(props.image || '');
   const [dateOfPost] = useState(props.dateOfPost || new Date());
-  const [imgSrc, setImgSrc] = useState(null);
+  const [imgSrc, setImgSrc] = useState('');
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    setImage(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       setImgSrc(reader.result);
@@ -24,9 +25,21 @@ const BulletinForm = (props) => {
 
   const submitHandle = (e) => {
     e.preventDefault();
-
-    if (props.actionText === 'Edit Bulletin') props.action({id, title, content, price, location, image, dateOfPost});
-    else props.action({title, content, price, location, image, dateOfPost});
+    
+    const fd = new FormData();
+    fd.append('title', title);
+    fd.append('content', content);
+    fd.append('price', price);
+    fd.append('location', location);
+    fd.append('dateOfPost', dateOfPost);
+    if (props.actionText === 'Add Bulletin'){
+      fd.append('image', image);
+      props.action(fd);
+    }else{ 
+      fd.append('id', id);
+      if(image) fd.append('image', image);
+      props.action(fd);
+    }
   }
 
   return(
@@ -40,7 +53,7 @@ const BulletinForm = (props) => {
           </label>
           <label>
             <span>Price</span>
-            <input name="priceAdd" id="priceAdd" type="text" placeholder="Price..." value={price} onChange={(e) => setPrice(e.target.value)} />
+            <input name="priceAdd" id="priceAdd" type="number" placeholder="Price..." value={price} onChange={(e) => setPrice(e.target.value)} />
           </label>
           <label>
             <span>Location</span>
@@ -55,9 +68,9 @@ const BulletinForm = (props) => {
           <label>
             <span>Image</span>
             <input type="file" id="fileInput" accept=".jpg, .jpeg, .png" onChange={handleFileChange}  />
-            {imgSrc && <img src={imgSrc} alt={title} />}
-            { image && <img src={`${SOCKET_URL}/uploads/${image}`} alt={title} />}
           </label>
+            {imgSrc && <img src={imgSrc} alt={title} />}
+            {image && !imgSrc && <img src={`${SOCKET_URL}/uploads/${image}`} alt={title} />}
           <Button type="submit" variant="submit">{props.actionText}</Button>
         </fieldset> 
       </fieldset>

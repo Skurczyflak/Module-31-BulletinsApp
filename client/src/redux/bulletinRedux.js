@@ -5,6 +5,7 @@ import { API_URL } from '../config';
 export const getBulletins = ({bulletins}) => bulletins.data;
 export const getRequest = ({bulletins}) => bulletins.request;
 export const getBulletin = ({bulletins}) => bulletins.single;
+export const getSearchBulletins = ({bulletins}) => bulletins.searchBulletins;
 
 /* ACTIONS */
 const reducerName = 'bulletins';
@@ -16,6 +17,7 @@ const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 
 const LOAD_BULLETINS = createActionName('LOAD_BULLETINS');
 const GET_BULLETIN_BY_ID = createActionName('GET_BULLETIN_BY_ID');
+const SEARCH_BULLETINS = createActionName('SEARCH_BULLETINS');
 
 /* ACTION CREATORS */
 export const startRequest = () => ({ type: START_REQUEST });
@@ -24,7 +26,21 @@ export const errorRequest = error => ({ error, type: ERROR_REQUEST });
 
 export const loadBulletins = payload => ({ payload, type: LOAD_BULLETINS });
 export const getBulletinById = payload => ({ payload, type: GET_BULLETIN_BY_ID });
+export const searchBulletins = payload => ({ payload, type: SEARCH_BULLETINS });
 /* THUNKS */
+export const getSearchBulletinsRequest = searchPhrase => {
+    return async dispatch => {
+        dispatch(startRequest({name: 'SEARCH_BULLETINS'}));
+        try{
+            let res = await axios.get(`${API_URL}/bulletins/search/${searchPhrase}`);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            dispatch(searchBulletins(res.data));
+            dispatch(endRequest({name: 'SEARCH_BULLETINS'}));
+        }catch(err){
+            dispatch(errorRequest({ name: 'SEARCH_BULLETINS', error: err.message}));
+        }
+    }
+}
 
 export const loadBulletinsRequest = () => {
     return async dispatch => {
@@ -53,13 +69,12 @@ export const getBulletinByIdRequest = id => {
         }
     }
 };
-
-
 /* INITIAL STATE */
 
 const initialState = {
   data: [],
   single: {},
+  searchBulletins: [],
   searchResults: [],
   request: { pending: false, error: null, success: null }
 };
@@ -68,6 +83,8 @@ const initialState = {
 
 export default function reducer(statePart = initialState, action = {}) {
     switch(action.type) {
+    case SEARCH_BULLETINS:
+        return { ...statePart, searchBulletins: [...action.payload] };
     case LOAD_BULLETINS:
         return { ...statePart, data: [...action.payload] };
     case GET_BULLETIN_BY_ID:

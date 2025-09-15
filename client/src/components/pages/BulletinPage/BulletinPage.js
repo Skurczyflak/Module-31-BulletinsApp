@@ -18,7 +18,7 @@ const BulletinPage = () => {
     const bulletin = useSelector(getBulletin);
 
     if(request.pending) return <ProgressBox />;
-    else if(request.error) return <h1>{request.error}</h1>;
+    else if(request.error) return <>{request.error.message}</>;
     else if(!request.success) return <h1>No bulletin</h1>;
     else if(request.success)
     return(

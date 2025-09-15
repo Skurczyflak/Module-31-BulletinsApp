@@ -101,7 +101,7 @@ const RegisterPage = () => {
                 </label>
                 <Button type="submit" variant="submit" >Login</Button>
                 </fieldset>
-                <fieldset className={styles.inputGroup}>
+                <fieldset className={`${styles.inputGroup} ${styles.avatar}`}>
                     <label>
                         <span>Avatar</span>
                         <input type="file" id="fileInput" accept=".jpg, .jpeg, .png" onChange={handleFileChange}  />

@@ -5,9 +5,9 @@ import Button from '../../common/Button/Button';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SearchForm = () => {
+const SearchForm = ({children}) => {
     const navigate = useNavigate();
-    const [searchPhrase, setSearchPhrase] = useState('');
+    const [searchPhrase, setSearchPhrase] = useState( children || '' );
 
     const submitHandle = (e) => {
         e.preventDefault();

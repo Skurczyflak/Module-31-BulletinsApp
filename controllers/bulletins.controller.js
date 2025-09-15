@@ -34,7 +34,6 @@ exports.addOne = async(req, res) => {
         const {title, content, dateOfPost, price, location} = req.body;
         const sellerId = req.session.user.id;
         const fileType = req.file ? await getImageFileType(req.file.path): 'unknown';
-        
         if( title && typeof title === 'string' && content && typeof content === 'string' && dateOfPost && typeof dateOfPost === 'string' && price && typeof price === 'string' && location && typeof location === 'string' && sellerId && req.file && ['image/jpeg', 'image/gif', 'image/png'].includes(fileType) ){
             const bulletin = await Bulletins.create({title: title, content: content, dateOfPost: dateOfPost, image: req.file.filename, price: price, location: location, sellerId: sellerId});
             return res.status(201).json({message: `Bulletin created successfully. ID: ${bulletin._id}`});
@@ -43,8 +42,9 @@ exports.addOne = async(req, res) => {
             res.status(400).json({message: 'Bad request'});
         }
     }catch(err){
+        //console.log(err);
         if(req.file) fs.unlinkSync(req.file.path);
-        res.status(500).json({message: err});
+        res.status(500).json({message: 'This is server foult'});
     }
 }
 
@@ -53,7 +53,7 @@ exports.updateOne = async(req, res) => {
         const {title, content, dateOfPost, price, location} = req.body;
         const fileType = req.file ? await getImageFileType(req.file.path): 'unknown'; 
         const bulletins = await Bulletins.findById(req.params.id);
-        if(bulletins.sellerId !== req.session.user.id){
+        if(bulletins.sellerId.toString() !== req.session.user.id.toString()){
             return res.status(403).json({message: 'Forbidden'});
         }else{
             const update = {};
@@ -75,13 +75,12 @@ exports.updateOne = async(req, res) => {
 exports.deleteOne = async(req, res) => {
     try{
         const bulletinsFound = await Bulletins.findById(req.params.id);
-        if(bulletinsFound && bulletinsFound.sellerId === req.session.user.id){
+        if(bulletinsFound && bulletinsFound.sellerId.toString() === req.session.user.id.toString()){
             await Bulletins.deleteOne({_id: req.params.id});
             fs.unlinkSync(`./public/uploads/${bulletinsFound.image}`);
-            const bulletins = await Bulletins.find();
-            res.json(bulletins);
+            return res.status(200).json({message: 'Bulletin deleted successfully'});
         }else {
-            if(bulletinsFound && bulletinsFound.sellerId !== req.session.user.id) return res.status(403).json({message: 'Forbidden'});
+            if(bulletinsFound && bulletinsFound.sellerId.toString() !== req.session.user.id.toString()) return res.status(403).json({message: 'Forbidden'});
             else return res.status(404).json({message: 'Not found'});
         }
     }catch(err){

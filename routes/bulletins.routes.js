@@ -22,14 +22,7 @@ router.post(
     BulletinsController.addOne
 );
 
-router.put(
-    '/bulletins/:id', 
-    function (req, res, next) { 
-        upload(req, res, function (err) { uploadFlieErrorHandling(err, req, res, next) })
-    },
-    authMiddleware, 
-    BulletinsController.updateOne
-);
+router.put('/bulletins/:id', function (req, res, next) { upload(req, res, function (err) { uploadFlieErrorHandling(err, req, res, next) })}, authMiddleware,  BulletinsController.updateOne);
 
 router.delete('/bulletins/:id',authMiddleware, BulletinsController.deleteOne);
 
