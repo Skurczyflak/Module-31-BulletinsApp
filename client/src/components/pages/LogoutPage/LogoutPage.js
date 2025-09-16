@@ -11,6 +11,7 @@ const LogoutPage = () => {
     useEffect(() => {
         const options = {
             method: 'DELETE',
+            credentials: 'include'
         };
         fetch(`${API_URL}/auth/logout`, options)
         .then(() => {

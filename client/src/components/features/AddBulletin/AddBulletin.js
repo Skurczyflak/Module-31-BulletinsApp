@@ -10,7 +10,7 @@ const AddBulletin = () => {
 
     const handleSubmit = bulletin => {
         setStatus('loading');
-        fetch(`${API_URL}/bulletins`, {method: 'POST', body: bulletin})
+        fetch(`${API_URL}/bulletins`, {method: 'POST', credentials: 'include', body: bulletin})
         .then(res => {
             if(res.status === 201){
                 setStatus('success');

@@ -22,7 +22,7 @@ const EditBulletin = () => {
     
     const handleSubmit = bulletin => {
         setStatus('loading');
-        fetch(`${API_URL}/bulletins/${id}`, {method: 'PUT', body: bulletin})
+        fetch(`${API_URL}/bulletins/${id}`, {method: 'PUT', credentials: 'include', body: bulletin})
         .then(res => {
             if(res.status === 200){
                 setStatus('success');

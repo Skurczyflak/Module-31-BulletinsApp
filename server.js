@@ -43,6 +43,10 @@ app.use(session({
 app.use('/api', bulletinsRoutes);
 app.use('/api/auth', authRoutes);
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build/index.html'));
+});
+
 //Database connection
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
 
